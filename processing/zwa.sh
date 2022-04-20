@@ -4,7 +4,7 @@
 #https://github.com/ndovro/ZWA/blob/main/zwa.sh
 
 #Typical run: # ./zwa.sh RAW_READS.fastq reference.fasta
-source activate trinity-env 
+#source activate trinity-env 
 
 #raw_reads=$1
 #ribos=$2
@@ -28,12 +28,12 @@ CPUS=8
 raw_cut=`basename ${raw_reads}`
 raw_ribos=`basename ${ribos}`
 
-if [ $# -gt 0 ]; then
-    echo "Your command line contains $# arguments"
-else
-    echo "You need to provide raw reads and a ribosomal reference"
-    exit 1
-fi
+#if [ $# -gt 0 ]; then
+#    echo "Your command line contains $# arguments"
+#else
+#    echo "You need to provide raw reads and a ribosomal reference"
+#    exit 1
+#fi
 
 # create appropriate directory
 dir1=${raw_cut%.fq}_$(date +%F)
