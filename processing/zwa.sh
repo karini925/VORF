@@ -4,9 +4,17 @@
 #https://github.com/ndovro/ZWA/blob/main/zwa.sh
 
 #Typical run: # ./zwa.sh RAW_READS.fastq reference.fasta
+conda activate trinity-env 
 
-raw_reads=$1
-ribos=$2
+#raw_reads=$1
+#ribos=$2
+
+#testing
+raw_reads=/home/keren/DATA/RNAseq/ERR3953893.fq
+ribos=/home/keren/DATA/rRNA_genbank_U13369_1.fasta #from https://www.ncbi.nlm.nih.gov/nuccore/U13369.1?report=fasta
+
+#starting directory 
+cd /home/keren/DATA/RNAseq/ZWA
 
 #Edit PATHS so that the script can find the appropriate programs
 PATH_TO_BBMAP='/home/keren/ANALYSIS/BBMap/sh/reformat.sh'
@@ -14,8 +22,8 @@ PATH_TO_fasomerecords='/home/keren/ANALYSIS/faSomeRecords/faSomeRecords.py'
 PATH_TO_TRINITY='/home/keren/miniconda3/envs/trinity-env/opt/trinity-2.8.5/Trinity'
 
 #Change number of processes and cores as needed / can be supported by your server
-N=5000
-CPUS=16
+N=100
+CPUS=8
 
 raw_cut=`basename ${raw_reads}`
 raw_ribos=`basename ${ribos}`
@@ -28,17 +36,17 @@ else
 fi
 
 # create appropriate directory
-dir1=${raw_cut%.fastq}_$(date +%F)
- mkdir  ${dir1}
+dir1=${raw_cut%.fq}_$(date +%F)
+mkdir ${dir1}
 
 # copy reads aligned on ribosomal reference to the new dir
- cp ${raw_reads} ${dir1}
- cp ${ribos} ${dir1}
+cp ${raw_reads} ${dir1}
+cp ${ribos} ${dir1}
 
- cd  ${dir1}
+cd  ${dir1}
 
 #CREATE BLASTN RIBOSOMAL DB
- makeblastdb -dbtype 'nucl' -in  ${ribos} -parse_seqids -b lastdb_version 5 -out ./${raw_ribos}
+makeblastdb -dbtype 'nucl' -in  ${ribos} -parse_seqids -out ./${raw_ribos}
 
 #ALIGN ON RIBOSOMAL
 bwa index ${raw_ribos}
@@ -52,40 +60,36 @@ samtools view ribo.bam |cut -f 1,6 |grep S | cut -f 1 > dirty.txt
 
 samtools bam2fq ribo.bam > ribo.fastq
 samtools bam2fq other.bam > other.fastq
-${PATH_TO_BBMAP} in=ribo.fastq out=ribo.fasta
+
+#convert ribo fastq to fasta file
+cat ribo.fastq | paste - - - - | sed 's/^@/>/g'| cut -f1-2 | tr '\t' '\n' > ribo.fasta
 
 #THIS KEEPS ONLY THE READS WITH SOFTCLIPPING
-${PATH_TO_fasomerecords} ribo.fasta dirty.txt  aligned.fasta
-
-
-
+${PATH_TO_fasomerecords} --fasta ribo.fasta --list dirty.txt --outfile aligned.fasta
 
 # change fastq to fasta using bbmap's reformat
-${PATH_TO_BBMAP} in=other.fastq out=other.fasta
-
+cat other.fastq | paste - - - - | sed 's/^@/>/g'| cut -f1-2 | tr '\t' '\n' > other.fasta
 
 # create a clean fasta with 1 line per sequence
 awk '/^[>;]/ { if (seq) { print seq }; seq=""; print } /^[^>;]/ { seq = seq $0 } END { print seq }' aligned.fasta > aligned_clean.fasta
 
 #use blastn to locate hybrid reads
-cat aligned_clean.fasta| parallel --block 50k --recstart '>' --pipe blastn -db ${raw_ribos} -task blastn -outfmt "'6 qseqid sseqid qcovs length mismatch gapopen qstart qend sstart send evalue bitscore'"  -max_target_seqs 1 -max_hsps 1 -query - | bioawk -t '$4>19 {print $0}' > combined_results.txt
-
+bioawk=/home/keren/ANALYSIS/bioawk/bioawk
+cat aligned_clean.fasta| parallel --block 50k --recstart '>' --pipe blastn -db ${raw_ribos} -task blastn -outfmt "'6 qseqid sseqid qcovs length mismatch gapopen qstart qend sstart send evalue bitscore'"  -max_target_seqs 1 -max_hsps 1 -query - | $bioawk -t '$4>19 {print $0}' > combined_results.txt
 
 #create directory for clean reads
 mkdir clean
 
 #start the cleaning algorithm
 
-
-
 echo "STARTING CLEANING"
-bioawk  -t '{print $1,$7,$8}' combined_results.txt | while IFS=$'\t' read dirty_seq hybrid_start hybrid_end
+$bioawk  -t '{print $1,$7,$8}' combined_results.txt | while IFS=$'\t' read dirty_seq hybrid_start hybrid_end
 do
 ((i=i%N)); ((i++==0)) && wait
 (
 #the sequence we want to clean
 
-target_seq=$(bioawk -c fastx -v r=${dirty_seq} '$name==r {print $seq }' aligned_clean.fasta)
+target_seq=$($bioawk -c fastx -v r=${dirty_seq} '$name==r {print $seq }' aligned_clean.fasta)
 #the target's length
 length_seq=${#target_seq}
 
@@ -128,8 +132,6 @@ fi
  done
 wait
 
-
-
 cp clean_seqs.fasta clean/
 
 cd clean
@@ -139,9 +141,9 @@ cat ../other.fasta clean_seqs.fasta > for_trinity.fasta
 #change memory and CPUs to fit your needs
 #this section can be modified to use other assemblers
 #Since the assembly process is stochastic multiple assemblies are created to be utilized for validation
-${PATH_TO_TRINITY} --seqType fa --single ./for_trinity.fasta --max_memory 50G --CPU ${CPUS} --full_cleanup --output trinity_combination1
-${PATH_TO_TRINITY} --seqType fa --single ./for_trinity.fasta --max_memory 50G --CPU ${CPUS} --full_cleanup --output trinity_combination2
-${PATH_TO_TRINITY} --seqType fa --single ./for_trinity.fasta --max_memory 50G --CPU ${CPUS} --full_cleanup --output trinity_combination3
-${PATH_TO_TRINITY} --seqType fa --single ./for_trinity.fasta --max_memory 50G --CPU ${CPUS} --full_cleanup --output trinity_combination4
-${PATH_TO_TRINITY} --seqType fa --single ./for_trinity.fasta --max_memory 50G --CPU ${CPUS} --full_cleanup --output trinity_combination5
+#${PATH_TO_TRINITY} --seqType fa --single ./for_trinity.fasta --max_memory 50G --CPU ${CPUS} --full_cleanup --output trinity_combination1
+#${PATH_TO_TRINITY} --seqType fa --single ./for_trinity.fasta --max_memory 50G --CPU ${CPUS} --full_cleanup --output trinity_combination2
+#${PATH_TO_TRINITY} --seqType fa --single ./for_trinity.fasta --max_memory 50G --CPU ${CPUS} --full_cleanup --output trinity_combination3
+#${PATH_TO_TRINITY} --seqType fa --single ./for_trinity.fasta --max_memory 50G --CPU ${CPUS} --full_cleanup --output trinity_combination4
+#${PATH_TO_TRINITY} --seqType fa --single ./for_trinity.fasta --max_memory 50G --CPU ${CPUS} --full_cleanup --output trinity_combination5
 
