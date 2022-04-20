@@ -9,7 +9,7 @@ bbmask=/home/keren/ANALYSIS/bbmap/bbmask.sh
 ribo=/home/keren/DATA/rRNA_genbank_U13369_1.fasta
 human=/home/keren/DATA/GRCh38_latest_genomic.fna.gz
 
-$mapPacBio ref=$human in=$ribo out=mapped.sam ambig=all maxindel=20 -Xmx 30G
+$mapPacBio ref=$human in=$ribo out=mapped.sam ambig=all maxindel=20 
 
 #Then you can run BBMask:
 
