@@ -4,7 +4,7 @@
 #https://github.com/ndovro/ZWA/blob/main/zwa.sh
 
 #Typical run: # ./zwa.sh RAW_READS.fastq reference.fasta
-conda activate trinity-env 
+source activate trinity-env 
 
 #raw_reads=$1
 #ribos=$2
