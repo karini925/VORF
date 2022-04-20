@@ -141,9 +141,9 @@ cat ../other.fasta clean_seqs.fasta > for_trinity.fasta
 #change memory and CPUs to fit your needs
 #this section can be modified to use other assemblers
 #Since the assembly process is stochastic multiple assemblies are created to be utilized for validation
-#${PATH_TO_TRINITY} --seqType fa --single ./for_trinity.fasta --max_memory 50G --CPU ${CPUS} --full_cleanup --output trinity_combination1
-#${PATH_TO_TRINITY} --seqType fa --single ./for_trinity.fasta --max_memory 50G --CPU ${CPUS} --full_cleanup --output trinity_combination2
-#${PATH_TO_TRINITY} --seqType fa --single ./for_trinity.fasta --max_memory 50G --CPU ${CPUS} --full_cleanup --output trinity_combination3
-#${PATH_TO_TRINITY} --seqType fa --single ./for_trinity.fasta --max_memory 50G --CPU ${CPUS} --full_cleanup --output trinity_combination4
-#${PATH_TO_TRINITY} --seqType fa --single ./for_trinity.fasta --max_memory 50G --CPU ${CPUS} --full_cleanup --output trinity_combination5
+${PATH_TO_TRINITY} --seqType fa --single ./for_trinity.fasta --max_memory 50G --CPU ${CPUS} --full_cleanup --output trinity_combination1
+${PATH_TO_TRINITY} --seqType fa --single ./for_trinity.fasta --max_memory 50G --CPU ${CPUS} --full_cleanup --output trinity_combination2
+${PATH_TO_TRINITY} --seqType fa --single ./for_trinity.fasta --max_memory 50G --CPU ${CPUS} --full_cleanup --output trinity_combination3
+${PATH_TO_TRINITY} --seqType fa --single ./for_trinity.fasta --max_memory 50G --CPU ${CPUS} --full_cleanup --output trinity_combination4
+${PATH_TO_TRINITY} --seqType fa --single ./for_trinity.fasta --max_memory 50G --CPU ${CPUS} --full_cleanup --output trinity_combination5
 
