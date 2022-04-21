@@ -7,8 +7,7 @@
 #source activate trinity-env 
 
 #raw_reads=$1
-#ribos=$2
-#human_noribo=$3
+#human=$2
 
 #testing
 raw_reads=/home/keren/DATA/RNAseq/ERR3953893.fq #initially was a bam file with 100% unmapped reads, split into paired end fastq files --> interleaved into one fastq file
