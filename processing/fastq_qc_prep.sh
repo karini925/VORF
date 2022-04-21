@@ -46,5 +46,3 @@ rm $bam_name.end2.fq
 
 echo now reads ready for mapping!
 
-#to run on all bam files in directory 
-#parallel -j12 --verbose "plink --bfile {.} --clump-p1 1 --clump-r2 0.1 --clump-kb 250 --clump $pgc_summ --clump-snp-field SNP --clump-field P --allow-no-sex --out {.}" ::: *.bam 
