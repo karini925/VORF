@@ -26,7 +26,7 @@ r2=$id.r2_trimmed.fq
 
 echo Mapping reads to the human genome to remove human contaminants
 
-bwa mem -t 8 ${human_ref} ${r1} ${r2} > $output/${id}.sam
+bwa mem -t 6 ${human_ref} ${r1} ${r2} > $output/${id}.sam
 
 #--------------------------------------------------
 #2. extract reads that didn't map to human 
