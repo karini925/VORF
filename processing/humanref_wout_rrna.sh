@@ -23,6 +23,3 @@ $bbmask in=$human out=$output/human_rRNA_masked.fasta sam=$output/mapped.sam mas
 rm $output/mapped.sam
 
 echo DONE
-
-#torun 
-#nohup ./humanref_wout_rrna.sh & #(will keep running in background)

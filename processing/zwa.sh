@@ -8,16 +8,18 @@
 
 #raw_reads=$1
 #ribos=$2
+#human_noribo=$3
 
 #testing
-raw_reads=/home/keren/DATA/RNAseq/ERR3953893.fq
+raw_reads=/home/keren/DATA/RNAseq/ERR3953893.fq #initially was a bam file with 100% unmapped reads, split into paired end fastq files --> interleaved into one fastq file
 ribos=/home/keren/DATA/rRNA_genbank_U13369_1.fasta #from https://www.ncbi.nlm.nih.gov/nuccore/U13369.1?report=fasta
+human_noribo=/home/keren/DATA/RNAseq/human/human_rRNA_masked.fasta
 
 #starting directory 
 cd /home/keren/DATA/RNAseq/ZWA
 
 #Edit PATHS so that the script can find the appropriate programs
-PATH_TO_BBMAP='/home/keren/ANALYSIS/BBMap/sh/reformat.sh'
+PATH_TO_BBMAP='/home/keren/ANALYSIS/bbmap/reformat.sh'
 PATH_TO_fasomerecords='/home/keren/ANALYSIS/faSomeRecords/faSomeRecords.py'
 PATH_TO_TRINITY='/home/keren/miniconda3/envs/trinity-env/opt/trinity-2.8.5/Trinity'
 
@@ -27,32 +29,38 @@ CPUS=8
 
 raw_cut=`basename ${raw_reads}`
 raw_ribos=`basename ${ribos}`
-
-#if [ $# -gt 0 ]; then
-#    echo "Your command line contains $# arguments"
-#else
-#    echo "You need to provide raw reads and a ribosomal reference"
-#    exit 1
-#fi
+raw_humannoribo=`basename ${human_noribo}`
 
 # create appropriate directory
 dir1=${raw_cut%.fq}_$(date +%F)
 mkdir ${dir1}
 
 # copy reads aligned on ribosomal reference to the new dir
-cp ${raw_reads} ${dir1}
-cp ${ribos} ${dir1}
+#cp ${raw_reads} ${dir1}
+#cp ${ribos} ${dir1}
+#cp ${human_noribo} ${dir1}
 
 cd  ${dir1}
 
 #CREATE BLASTN RIBOSOMAL DB
-makeblastdb -dbtype 'nucl' -in  ${ribos} -parse_seqids -out ./${raw_ribos}
+makeblastdb -dbtype 'nucl' -in ${ribos} -parse_seqids -out ./${raw_ribos}
 
 #ALIGN ON RIBOSOMAL
 bwa index ${raw_ribos}
-bwa mem -t ${CPUS} ${raw_ribos} ${raw_cut} > aligned.sam
-samtools view -b -F 4 aligned.sam >ribo.bam
-samtools view -b -f 4 aligned.sam>other.bam
+#bwa index ${human_noribo} #just do once 
+
+#align to human (no ribosomal sequence)
+bwa mem -t ${CPUS} ${human_noribo} ${raw_cut} > human_aligned.sam
+samtools view -b -F 4 human_aligned.sam > human.bam
+samtools view -b -f 4 human_aligned.sam > not_human.bam #this is the one we want to keep
+
+#make fastq file again from 'not_human.bam' bam file
+samtools bam2fq not_human.bam > not_human.fastq
+
+#now align non human reads to ribosome reference
+bwa mem -t ${CPUS} ${raw_ribos} not_human.fastq > aligned.sam
+samtools view -b -F 4 aligned.sam > ribo.bam #nothing left here
+samtools view -b -f 4 aligned.sam> other.bam
 
 #DETECT HYBRIDS USING SOFTCLIPPING (MAKE SURE YOUR READ NAMES DONT CONTAIN THE LETTER 'S')
 
