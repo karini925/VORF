@@ -12,4 +12,4 @@ nohup parallel -j10 --verbose "$script {}" ::: *.bam &
 #[3] map processed reads to the human reference 
 cd /home/keren/DATA/RNAseq
 script=~/ANALYSIS/VORF/processing/align_human_reads.sh
-nohup parallel -j10 --verbose "$script {}" ::: *.bam & 
+nohup parallel -j6 --verbose "$script {}" ::: *.bam & 

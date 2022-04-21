@@ -11,7 +11,6 @@
 
 human_ref=/home/keren/DATA/human_ref/GRCh38_latest_genomic.fna.gz
 output=/home/keren/DATA/RNAseq/postQCrnaseq/aligned
-CPUS=8
 
 cd /home/keren/DATA/RNAseq
 
@@ -27,7 +26,7 @@ r2=$id.r2_trimmed.fq
 
 echo Mapping reads to the human genome to remove human contaminants
 
-bwa mem -t ${CPUS} ${human_ref} ${r1} ${r2} > $output/${id}.sam
+bwa mem -t 8 ${human_ref} ${r1} ${r2} > $output/${id}.sam
 
 #--------------------------------------------------
 #2. extract reads that didn't map to human 
