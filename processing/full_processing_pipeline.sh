@@ -9,7 +9,13 @@ cd /home/keren/DATA/RNAseq
 script=~/ANALYSIS/VORF/processing/fastq_qc_prep.sh  
 nohup parallel -j10 --verbose "$script {}" ::: *.bam & 
 
-#[3] map processed reads to the human reference 
+#[3] map processed reads to the human reference and extract those that don't map
 cd /home/keren/DATA/RNAseq
 script=~/ANALYSIS/VORF/processing/align_human_reads.sh
 nohup parallel -j2 --verbose "$script {}" ::: *.bam & 
+
+#[4] run IVA assembly and trinity on these clean reads
+cd /home/keren/DATA/RNAseq
+script=~/ANALYSIS/VORF/assemblers/IVA_assembly.sh
+nohup parallel -j2 --verbose "$script {}" ::: *.bam & 
+
