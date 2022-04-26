@@ -119,9 +119,15 @@ class contig:
         self.parent=parent
         self.abundance=abundance
         self.string=kmer
-        if parent==None
-            self.length=1
-        else:
+        self.length=1
+        if not parent==None:
             self.length=parent.length+1
     def __str__(self):
         return "Str:"+str(self.string)+"|Ab:"+str(self.abundance)+"|Length:"+str(self.length)
+
+    def is_stop(self):
+        return self.string[-1]=='_'
+
+    def extend(self, str):
+        self.string+=str
+        self.length+=1
