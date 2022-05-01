@@ -7,7 +7,7 @@ Currently, we are testing our tool on four types of viruses.
 
 ## Processing of raw reads 
 
-This includes aligning reads to human and keeping those that do not align. Further, Chimera reads are identified by looking at the rRNA reference to increase the number of viral reads available for assembly. 
+This includes aligning reads to human and keeping those that do not align. 
 
 ## Viral ORF assembly 
 
