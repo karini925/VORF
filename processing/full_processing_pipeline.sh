@@ -14,8 +14,13 @@ cd /home/keren/DATA/RNAseq
 script=~/ANALYSIS/VORF/processing/align_human_reads.sh
 nohup parallel -j2 --verbose "$script {}" ::: *.bam & 
 
-#[4] run IVA assembly and trinity on these clean reads
+#[4] run IVA assembly on clean reads 
 cd /home/keren/DATA/RNAseq
 script=~/ANALYSIS/VORF/assemblers/IVA_assembly.sh
+nohup parallel -j2 --verbose "$script {}" ::: *.bam & 
+
+#[5] run trinity on clean reads 
+cd /home/keren/DATA/RNAseq
+script=~/ANALYSIS/VORF/assemblers/trinity_test.sh
 nohup parallel -j2 --verbose "$script {}" ::: *.bam & 
 
