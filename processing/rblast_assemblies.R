@@ -1,5 +1,6 @@
 #library(rBlast)
 library(data.table)
+options(timeout=1000000000000000000000)
 
 #setup databse (NR/NT)
 setwd("/home/keren/DATA/blast_db")
