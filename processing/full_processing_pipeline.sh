@@ -24,11 +24,9 @@ cd /home/keren/DATA/RNAseq
 script=~/ANALYSIS/VORF/assemblers/trinity_assembly.sh
 nohup parallel -j2 --verbose "$script {}" ::: *.bam & 
 
-#[6] download blastdb NR/NT 
-cd /home/keren/DATA/
-conda activate r_env
-script=/home/keren/ANALYSIS/VORF/processing/rblast_assemblies.R
-nohup Rscript $script & 
+#[6] run VORF on all bam files
+cd /home/keren/DATA/RNAseq
+script=~/ANALYSIS/VORF/assemblers/run_vorf.sh
+nohup parallel -j3 --verbose "$script {}" ::: *.bam & 
 
-script=/home/keren/ANALYSIS/VORF/processing/rblast_assemblies_nt.R
-nohup Rscript $script & 
+
