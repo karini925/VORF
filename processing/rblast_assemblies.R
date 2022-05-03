@@ -6,10 +6,10 @@ options(timeout=1000000000000000000000)
 setwd("/home/keren/DATA/blast_db")
 
 #download the db
-for(i in 0:57){
+for(i in 1:57){
 	print(i)
 	if(i < 10){
-		i = paste(i,i, sep="")
+		i = paste(0,i, sep="")
 	}
 	file_d=paste("nr.", i, ".tar.gz", sep="")
 	## download NR data base from NCBI
