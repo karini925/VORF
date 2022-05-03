@@ -29,3 +29,6 @@ cd /home/keren/DATA/
 conda activate r_env
 script=/home/keren/ANALYSIS/VORF/processing/rblast_assemblies.R
 nohup Rscript $script & 
+
+script=/home/keren/ANALYSIS/VORF/processing/rblast_assemblies_nt.R
+nohup Rscript $script & 
