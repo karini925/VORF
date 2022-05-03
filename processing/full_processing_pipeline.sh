@@ -21,6 +21,6 @@ nohup parallel -j2 --verbose "$script {}" ::: *.bam &
 
 #[5] run trinity on clean reads 
 cd /home/keren/DATA/RNAseq
-script=~/ANALYSIS/VORF/assemblers/trinity_test.sh
+script=~/ANALYSIS/VORF/assemblers/trinity_assembly.sh
 nohup parallel -j2 --verbose "$script {}" ::: *.bam & 
 

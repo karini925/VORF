@@ -24,7 +24,7 @@ mkdir $id
 cd $id
 
 #Since the assembly process is stochastic multiple assemblies are created to be utilized for validation
-${PATH_TO_TRINITY} --seqType fa  --left $r1  --right $r2 --max_memory 50G --CPU 8 --output ${id}_trinity_combination1
+${PATH_TO_TRINITY} --seqType fa  --left $r1  --right $r2 --max_memory 30G --CPU 6 --output ${id}_trinity_combination1
 ${PATH_TO_TRINITY} --seqType fa  --left $r1  --right $r2 --max_memory 30G --CPU 6 --output ${id}_trinity_combination2
 ${PATH_TO_TRINITY} --seqType fa  --left $r1  --right $r2 --max_memory 30G --CPU 6 --output ${id}_trinity_combination3
 ${PATH_TO_TRINITY} --seqType fa  --left $r1  --right $r2 --max_memory 30G --CPU 6 --output ${id}_trinity_combination4
