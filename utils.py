@@ -1,4 +1,5 @@
 import re
+import os
 from Bio.SeqRecord import SeqRecord
 from Bio.Seq import Seq
 from Bio import SeqIO
@@ -68,6 +69,7 @@ def reverse_complement(seq):
 
 def create_kmer_dictionary(tl, k):
     """ccreates dictionary from all possible kmers"""
+    print("Creating k-mer hash table...")
     dict={}
     for t in tl:
         for m in range(2):
@@ -84,6 +86,7 @@ def create_kmer_dictionary(tl, k):
     return dict
 
 def read_fastq(filenames):
+    print("Reading fastq files...")
     flattened_filtered=[]
     """reads fastq file, splits at all non-DNA letters and returns only sequence"""
     lines=[]
@@ -162,8 +165,10 @@ def assemble_proteins(dict, k=8, min_length=30):
     start_sites=[contig(None,k, dict[k], min_length) for k in dict.keys() if k.endswith('_') and not '_' in k[:-1]]
     start_sites.sort(key=lambda x: x.abundance)
     protein_dict={}
-
-    for i in range(len(start_sites)):
+    print('Assembling proteins...')
+    num_len=len(start_sites)
+    for i in range(num_len):
+        print('Assembling protein # %s of %s' % (i, num_len))
         queue=[]
         strand=start_sites.pop()
         count=0
@@ -198,6 +203,8 @@ def assemble_proteins(dict, k=8, min_length=30):
             protein+=parstrand.string
 
             protein='M'+protein.split('M',1)[1]
+            print('Protein sequence found: %s' % (protein))
+
             protein_dict[protein]=sum([dict.pop(protein[j:j+k]) for j in range(0,len(protein)-k+1)])/(len(protein)-k+1)
             protein_dict={k: v for k, v in sorted(protein_dict.items(), key=lambda item: item[1], reverse=True)}
 
@@ -207,8 +214,9 @@ def assemble_proteins(dict, k=8, min_length=30):
 def write_seq(name,proteins):
     res = list(map(lambda i: i[ : -1], list(proteins.keys())))
     records=[]
+    os.mkdir(name)
     for (index, seq) in enumerate(res):
-        records.append(SeqRecord(Seq(seq), str(index)))
-    SeqIO.write(records, name+'.faa', "fasta")
+        records=SeqRecord(Seq(seq), str(index))
+        SeqIO.write(records, name+'/'+str(index)+'.faa', "fasta")
 
     return res
