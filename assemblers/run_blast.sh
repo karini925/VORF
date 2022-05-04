@@ -10,10 +10,10 @@ id="${bamfile%%.*}"
 #results from assembly are found here 
 cd /home/keren/DATA/RNAseq/postQCrnaseq/aligned
 cd $id
-
+echo $id
 #for each fasta file run tblastn
 for file in *.faa ; do
 	echo "processing file=$file"
-	tblastn -db nr -query $file  -out ${file}_output_blast.txt -max_target_seqs 1 -outfmt 6 -remote 
+	tblastn -db nr -query $file  -out ${file}_output_blast.txt -max_target_seqs 1 -outfmt '6 qseqid sseqid evalue bitscore sgi sacc staxids sscinames scomnames stitle' -remote 
 done
 
