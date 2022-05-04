@@ -19,9 +19,9 @@ python $script $r1 $r2
 
 echo Done running VORF, now time to run tblastn to see what we found 
 
-cd $id
+#cd $id
 
-for file in *.faa ; do
-	echo "processing file=$file"
-	tblastn -db nr -query $file  -out ${file}_output_blast.txt -max_target_seqs 5 -outfmt '6 qseqid sseqid evalue bitscore sgi sacc staxids sscinames scomnames stitle' -remote 
-done
+#for file in *.faa ; do
+#	echo "processing file=$file"
+#	tblastn -db nr -query $file  -out ${file}_output_blast.txt -max_target_seqs 5 -outfmt '6 qseqid sseqid evalue bitscore sgi sacc staxids sscinames scomnames stitle' -remote 
+#done
