@@ -6,11 +6,11 @@ VORF is an RNA-seq-based open reading frame assembler capable of detecting amino
 
 ## Datasets 
 
-We applied our tool as well the assembler [IVA](https://github.com/sanger-pathogens/iva) to nine samples across three viruses: COVID-19, HIV and Lassa. All these are RNA viruses. An example dataset is available in our repository here. 
+We applied our tool as well the assembler [IVA](https://github.com/sanger-pathogens/iva) to nine samples across three viruses: COVID-19, HIV and Lassa. All these are RNA viruses and were downloaded from the [VGEA manuscript](https://figshare.com/articles/dataset/VGEA_A_snakemake_pipeline_for_RNA_virus_genome_assembly_from_next_generation_sequencing_data/13009997/3). An example dataset from COVID-19 is available in our repository [here](data). A summary of all nine samples is available [here](https://docs.google.com/spreadsheets/d/1zvgPzrfHkJR6LYx6D1xI5kHnIWBcRBKIrzlMGILYPk4/edit?usp=sharing).  
 
 ## Processing of raw reads 
 
-This includes running QC on reads, aligning them to the human reference and keeping only those that do not align. All this processing is summarized in the following script: [full_processing_pipeline.sh](processing/full_processing_pipeline.sh)
+This includes running QC on reads in fastq files, aligning them to the human reference and keeping only those that do not align. All this processing is summarized in the following script: [full_processing_pipeline.sh](processing/full_processing_pipeline.sh)
 
 ## Assembly algorithm 
 
