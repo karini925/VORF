@@ -10,7 +10,7 @@ We applied our tool as well the assembler [IVA](https://github.com/sanger-pathog
 
 ## Processing of raw reads 
 
-This includes running QC on reads in fastq files, aligning them to the human reference and keeping only those that do not align. All this processing is summarized in the following script: [full_processing_pipeline.sh](processing/full_processing_pipeline.sh)
+This includes running QC on reads in fastq files, aligning them to the human reference and keeping only those that do not align. All this processing is summarized in the following script: [full_processing_pipeline.sh](processing/full_processing_pipeline.sh). All processing scripts were run one at a time on all BAM files in parallel. 
 
 ## Assembly algorithm 
 
