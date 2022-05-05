@@ -20,8 +20,8 @@ To run VORF, the following packages need to be installed (can easily be done wit
 
 ```
 #enter directory with fastq input file 
-r1=CV167_1.fastq
-r2=CV167_2.fastq
+r1=/home/keren/ANALYSIS/VORF/data/CV167_1.fastq
+r2=/home/keren/ANALYSIS/VORF/data/CV167_2.fastq
 
 #run VORF 
 script=/home/keren/ANALYSIS/VORF/main.py
