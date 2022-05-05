@@ -34,4 +34,7 @@ cd /home/keren/DATA/RNAseq
 script=~/ANALYSIS/VORF/assemblers/run_blastn_iva.sh
 nohup parallel -j8 --verbose "$script {}" ::: *.bam > program.out & 
 
-
+#[8] run tblastn on VORF assembly contigs 
+cd /home/keren/DATA/RNAseq
+script=~/ANALYSIS/VORF/assemblers/run_blast.sh
+nohup parallel -j8 --verbose "$script {}" ::: *.bam > vorf_blast.out & 
