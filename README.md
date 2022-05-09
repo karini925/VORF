@@ -2,7 +2,7 @@
 
 Pandemics due to novel pathogens are an imminent threat, yet few methods for their speedy characterization exist. Current assemblies fall short of identifying novel sequences from environmental samples in an organism-agnostic manner.
 
-VORF is an RNA-seq-based open reading frame assembler capable of detecting amino acid sequences from clinical samples without a reference genome. 
+VORF is an RNA-seq-based open reading frame assembler capable of detecting amino acid sequences from clinical samples without a reference genome. Our paper describing the methods and results is available [here](https://drive.google.com/file/d/13LO2qoKUCCmFmOzI1k9UttmSIy7mJXap/view?usp=sharing).
 
 ## Datasets 
 
