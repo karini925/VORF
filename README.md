@@ -14,7 +14,9 @@ The data we downloaded from VGEA contained BAM files with unaligned reads. We fi
 
 ## Assembly algorithm 
 
-Noga fill in a little bit of detail about tool 
+The assembly algorithm was written in python and can be run using the [main.py file](main.py). The methods used for assembly are stored in the [utils.py file](utils.py).
+
+
 
 To run VORF, the following packages need to be installed (can easily be done with conda): ```scikit-learn```, ```biopython``` and ```levenshtein``` with a python 3 environment. 
 
